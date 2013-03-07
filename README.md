@@ -7,3 +7,5 @@ Using Extanium you can use the strong Ext JS 4 OOP implementation in your native
 Further more, the amazing new data types Ext.Map and Ext.Collection implement all the Ext.data.Store features.
 
 Extanium is MIT licensed. It's the first full-featured Open Source implementation of the Ext JS 4 OOP API.
+
+This is an alpha release. EXPERIMENTAL.
