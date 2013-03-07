@@ -1,4 +1,4 @@
-# Extanium
+## Extanium
 
 Extanium 2.0 allows you to develop cross-plattform native mobile apps using the fundamentals 
 of the Ext JS 4 API on top of Appcelerator Titanium and it's amazing Alloy application framework.

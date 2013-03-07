@@ -1,7 +1,7 @@
 module.exports = function (grunt) {
 
     var dirs = {
-        base: '../../app/lib/',
+        base: '',
         src: 'src/',
         test: 'test/',
         doc: 'doc'
