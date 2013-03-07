@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-Interface'>/**
+</span> * @class Ext.Interface
+ * @extends Object
+ * @private
+ *
+ * Simple interface implementation. Allows class specifications to be compared with a
+ * defined interface and the definition of those interfaces. Currently only checks
+ * member existence, not the type/class inheritance of members but this could be
+ * implemented easily.
+ */
+Ext.Interface = {
+
+<span id='Ext-Interface-property-STRING'>    /**
+</span>     * @property {String} STRING
+     * String data type definition for class member interface checks
+     * @readonly
+     */
+    STRING: 'string',
+
+<span id='Ext-Interface-property-FUNCTION'>    /**
+</span>     * @property {String} FUNCTION
+     * Function data type definition for class member interface checks
+     * @readonly
+     */
+    FUNCTION: 'function',
+
+<span id='Ext-Interface-property-BOOLEAN'>    /**
+</span>     * @property {String} BOOLEAN
+     * Boolean data type definition for class member interface checks
+     * @readonly
+     */
+    BOOLEAN: 'boolean',
+
+<span id='Ext-Interface-property-NUMBER'>    /**
+</span>     * @property {String} NUMBER
+     * Number data type definition for class member interface checks
+     * @readonly
+     */
+    NUMBER: 'number',
+
+<span id='Ext-Interface-property-OBJECT'>    /**
+</span>     * @property {String} OBJECT
+     * Object data type definition for class member interface checks
+     * @readonly
+     */
+    OBJECT: 'object',
+
+<span id='Ext-Interface-property-PRESENCE'>    /**
+</span>     * @property {String} PRESENCE
+     * Presence data type definition for class member interface checks
+     * @readonly
+     */
+    PRESENCE: 'presence',
+
+<span id='Ext-Interface-method-define'>    /**
+</span>     * Defines an interface (to be implemented by classes)
+     *
+     * @param {String} name Interface name
+     * @param {Object} def Interface definition
+     * @return {Ext.Interface}
+     */
+    define: function(name, def) {
+
+        if (Ext.isObject(def)) {
+            Ext.Interfaces[name] = def;
+        }
+        return Ext.Interface;
+    },
+
+<span id='Ext-Interface-method-check'>    /**
+</span>     * Checks a given class prototype definition against an
+     * interface named inside of the prototype itself ('implement'-property).
+     *
+     * @param {String} clsName Name of the class to check
+     * @param {Object} p Class prototype definition to check
+     * @return {Boolean}
+     */
+    check: function(clsName, p) {
+
+        var iface = null,
+            lastFail = false;
+
+        // Fetch interface
+        if (p.implement) {
+
+            iface = Ext.Interfaces[p.implement];
+
+            if (!iface) {
+                throw &quot;Interface '&quot; + p.implement + &quot;' doesn't exist but is required by class: '&quot; + clsName + &quot;'!&quot;;
+            }
+
+            // Simple member existence by name check
+            for (var iPropName in iface) {
+
+                // Presence-check
+                if (!p[iPropName]) {
+                    lastFail = Ext.Interface.PRESENCE;
+                } else {
+
+                    if (!iface[iPropName]) {
+
+                        throw &quot;The type for class member '&quot; + iPropName + &quot;' specified in interface '&quot; +
+                              p.implement + &quot;' is not defined!&quot;;
+                    }
+
+                    // Check
+                    switch (iface[iPropName]) {
+
+                        case Ext.Interface.STRING:
+                            if (typeof p[iPropName] !== &quot;string&quot;) {
+                                lastFail = Ext.Interface.STRING;
+                            }
+                            break;
+
+                        case Ext.Interface.BOOLEAN:
+                            if (typeof p[iPropName] !== &quot;boolean&quot;) {
+                                lastFail = Ext.Interface.BOOLEAN;
+                            }
+                            break;
+
+                        case Ext.Interface.NUMBER:
+                            if (typeof p[iPropName] !== &quot;number&quot;) {
+                                lastFail = Ext.Interface.NUMBER;
+                            }
+                            break;
+
+                        case Ext.Interface.FUNCTION:
+                            if (typeof p[iPropName] !== &quot;function&quot;) {
+                                lastFail = Ext.Interface.FUNCTION;
+                            }
+                            break;
+
+                        case Ext.Interface.OBJECT:
+                            if (typeof p[iPropName] !== &quot;object&quot;) {
+                                lastFail = Ext.Interface.OBJECT;
+                            }
+                            break;
+                    }
+                }
+
+                if (lastFail) {
+
+                    if (lastFail === Ext.Interface.PRESENCE) {
+
+                        throw &quot;Class member '&quot; + iPropName + &quot;' is not a member of class '&quot; + clsName +
+                              &quot;' but interface '&quot; + p.implement + &quot;' requires it's implementation!&quot;;
+                    } else {
+
+                        throw &quot;Class member '&quot; + iPropName + &quot;' of class '&quot; + clsName + &quot;' has wrong type. It's '&quot; +
+                              typeof p[iPropName] + &quot;' but interface '&quot; + p.implement + &quot;' requires: '&quot; + lastFail + &quot;'!&quot;;
+                    }
+                }
+            }
+            return true;
+
+        } else {
+
+            // No interface reference found, that's valid!
+            return true;
+        }
+    }
+};
+
+// Init global interfaces map
+Ext.Interfaces = {};
+<span id='Ext-method-defineInterface'>
+</span>/**
+ * Defines an interface (to be implemented by classes)
+ *
+ * @member Ext
+ * @method defineInterface
+ * @param {String} name Interface name
+ * @param {Object} def Interface definition
+ * @return {Ext.Interface}
+ */
+Ext.defineInterface = Ext.Interface.define;</pre>
+</body>
+</html>

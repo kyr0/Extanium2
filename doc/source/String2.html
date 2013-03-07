@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-String'>/**
+</span> * @class Ext.String
+ * @extends Object
+ * @singleton
+ * Singleton class as helper working with string.
+ */
+Ext.String = {
+
+<span id='Ext-String-property-emptyString'>    /**
+</span>     * An empty string
+     */
+    emptyString: '',
+
+<span id='Ext-String-property-escapeChars'>    /**
+</span>     * Escape chars e.g. for JSON-encode
+     * @private
+     */
+    escapeChars: {
+        &quot;\b&quot;: '\\b',
+        &quot;\t&quot;: '\\t',
+        &quot;\n&quot;: '\\n',
+        &quot;\f&quot;: '\\f',
+        &quot;\r&quot;: '\\r',
+        '&quot;' : '\\&quot;',
+        &quot;\\&quot;: '\\\\'
+    },
+
+<span id='Ext-String-property-htmlEntities'>    htmlEntities: {
+</span>        &quot;&amp;&quot;: &quot;&amp;amp;&quot;
+    },
+
+<span id='Ext-String-method-format'>    /**
+</span>     * Allows you to define a tokenized string and pass an arbitrary number of arguments to replace the tokens.  Each
+     * token must be unique, and must increment in the format {0}, {1}, etc.  Example usage:
+     * &lt;pre&gt;&lt;code&gt;
+     var cls = 'my-class', text = 'Some text';
+     var s = String.format('&amp;lt;div class=&quot;{0}&quot;&gt;{1}&amp;lt;/div&gt;', cls, text);
+     // s now contains the string: '&amp;lt;div class=&quot;my-class&quot;&gt;Some text&amp;lt;/div&gt;'
+     * &lt;/code&gt;&lt;/pre&gt;
+     * @param {String} input Input string
+     * @param {String...} strings The tokenized string to be formatted
+     * @return {String} The formatted string
+     */
+    format: function (format) {
+        var args = Ext.toArray(arguments, 1);
+        return format.replace(/\{(\d+)\}/g, function (m, i) {
+            return args[i];
+        });
+    },
+
+<span id='Ext-String-method-encode'>    /**
+</span>     * Encodes an String as JSON-text
+     *
+     * @param {String} string String to encode
+     * @return {String}
+     */
+    encode: function (string) {
+        if (/[&quot;\\\x00-\x1f]/.test(string)) {
+            return '&quot;' + string.replace(/([\x00-\x1f\\&quot;])/g, function (a, b) {
+                var c = Ext.String.escapeChars[b];
+                if (c) {
+                    return c;
+                }
+                c = b.charCodeAt();
+                return &quot;\\u00&quot; +
+                    Math.floor(c / 16).toString(16) +
+                    (c % 16).toString(16);
+            }) + '&quot;';
+        }
+        return '&quot;' + string + '&quot;';
+    },
+
+<span id='Ext-String-method-toArray'>    /**
+</span>     * Returns the given String as Array (chars)
+     * @param {String} string String to cast to an Array
+     * @return {Array}
+     */
+    toArray: function(string) {
+        return string.match(/./g);
+    },
+    
+    
+<span id='Ext-String-method-htmlEncode'>    htmlEncode: function(string) {
+</span>        
+    },
+
+<span id='Ext-String-method-htmlDecode'>    htmlDecode: function(string) {
+</span>
+    },
+
+<span id='Ext-String-method-capitalize'>    capitalize: function(string) {
+</span>
+    },
+
+<span id='Ext-String-method-ellipsis'>    ellipsis: function(string, length, wordDetection) {
+</span>
+    },
+
+<span id='Ext-String-method-escape'>    escape: function(string) {
+</span>
+    },
+
+<span id='Ext-String-method-escapeRegexp'>    escapeRegexp: function(string) {
+</span>
+    },
+
+<span id='Ext-String-method-leftPad'>    leftPad: function(string, size, char) {
+</span>
+    },
+
+<span id='Ext-String-method-repeat'>    repeat: function(string, times, separator) {
+</span>
+    },
+
+<span id='Ext-String-method-toggle'>    toggle: function(string, value1, value2){
+</span>
+    },
+
+<span id='Ext-String-method-trim'>    trim: function(string) {
+</span>
+    },
+
+<span id='Ext-String-method-uncapitalize'>    uncapitalize: function(string) {
+</span>
+    },
+
+<span id='Ext-String-method-toLower'>    toLower: function(string) {
+</span>
+    },
+
+<span id='Ext-String-method-toUpper'>    toUpper: function(string) {
+</span>
+    },
+
+
+<span id='Ext-String-method-nl2br'>    nl2br: function(string) {
+</span>
+    },
+
+<span id='Ext-String-method-substr'>    substr: function(string, startIdx, length) {
+</span>
+    },
+
+<span id='Ext-String-method-stripTags'>    stripTags: function(string) {
+</span>
+    },
+
+<span id='Ext-String-method-stripScripts'>    stripScripts: function(string) {
+</span>
+    },
+
+<span id='Ext-String-method-undef'>    /**
+</span>     * Returns an empty string if value is undefined
+     * @param {Mixed} value Whatever may be undefined
+     * @return {String}
+     */
+    undef: function(value) {
+        if (typeof value === 'undefined') {
+            return '';
+        }
+    },
+
+<span id='Ext-String-method-from'>    /**
+</span>     * Returns a String from any value
+     * @param {Mixed} value Whatever value
+     * @return {String}
+     */
+    from: function(value) {
+        return String(value);
+    }
+};
+
+// Create shortcuts
+Ext.format = Ext.String.format;
+Ext.emptyString = Ext.String.emptyString;
+Ext.toString = Ext.String.from;
+Ext.undef = Ext.String.undef;</pre>
+</body>
+</html>

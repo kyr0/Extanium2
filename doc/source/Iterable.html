@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-iter-Iterable'>/**
+</span> * @class Ext.iter.Iterable
+ * @extends Object
+ * @singleton
+ * Class for working with iterable datatype instances.
+ */
+Ext.iter.Iterable = {
+
+<span id='Ext-iter-Iterable-method-isIterable'>    /**
+</span>     * Returns true if a given value is iterable (simple spoken: accessible by [$propertyName])
+     * @param {Mixed} v Value to check
+     * @return {Boolean}
+     */
+    isIterable: function (v) {
+
+        //check for array or arguments
+        if (Ext.isArray(v) || v.callee || Ext.isString(v) || Ext.isObject(v)) {
+            return true;
+        }
+        return false;
+    },
+
+<span id='Ext-iter-Iterable-method-iterate'>    /**
+</span>     * Iterates either the elements in an array, or each of the properties in an object.
+     * &lt;b&gt;Note&lt;/b&gt;: If you are only iterating arrays, it is better to call {@link #each}.
+     * @param {Object/Array} object The object or array to be iterated
+     * @param {Function} fn The function to be called for each iteration.
+     * The iteration will stop if the supplied function returns false, or
+     * all array elements / object properties have been covered. The signature
+     * varies depending on the type of object being interated:
+     * &lt;div class=&quot;mdetail-params&quot;&gt;&lt;ul&gt;
+     * &lt;li&gt;Arrays : &lt;tt&gt;(Object item, Number index, Array allItems)&lt;/tt&gt;
+     * &lt;div class=&quot;sub-desc&quot;&gt;
+     * When iterating an array, the supplied function is called with each item.&lt;/div&gt;&lt;/li&gt;
+     * &lt;li&gt;Objects : &lt;tt&gt;(String key, Object value, Object)&lt;/tt&gt;
+     * &lt;div class=&quot;sub-desc&quot;&gt;
+     * When iterating an object, the supplied function is called with each key-value pair in
+     * the object, and the iterated object&lt;/div&gt;&lt;/li&gt;
+     * &lt;li&gt;Strings : &lt;tt&gt;(Index key, String value, String)&lt;/tt&gt;
+     * &lt;div class=&quot;sub-desc&quot;&gt;
+     * When iterating a string, the supplied function is called with each char in
+     * the string, and the iterated string&lt;/div&gt;&lt;/li&gt;
+     * &lt;/ul&gt;&lt;/div&gt;
+     * @param {Object} scope The scope (&lt;code&gt;this&lt;/code&gt; reference) in which the specified function is executed. Defaults to
+     * the &lt;code&gt;object&lt;/code&gt; being iterated.
+     */
+    iterate: function (iterable, fn, scope) {
+
+        if (Ext.isEmpty(iterable)) {
+            return;
+        }
+        if (Ext.isString(iterable)) {
+            iterable = Ext.String.toArray(iterable);
+        }
+        if (Ext.isArray(iterable)) {
+            Ext.Array.each(iterable, fn, scope);
+        } else if (Ext.isObject(iterable)) {
+            Ext.Object.each(iterable, fn, scope);
+        }
+    },
+
+<span id='Ext-iter-Iterable-method-count'>    /**
+</span>     * Returns the count (length) of a data structure
+     * @param {Mixed} input Arbitrary input data
+     * @return {Number}
+     */
+    count: function(input) {
+
+        if (Ext.isArray(input) || Ext.isString(input)) {
+            return input.length;
+        } else if (Ext.isObject(input)) {
+            return Ext.Object.count(input);
+        } else if (Ext.isMap(input)) {
+            return input.count();
+        } else if (Ext.isCollection(input)) {
+            return input.count();
+        } else {
+            return 0;
+        }
+    }
+};
+
+// Shortcuts
+
+<span id='Ext-method-iterate'>/**
+</span> * Shorthand for {@link Ext.iter.Iterable#isIterable}
+ * @param {Mixed} v Value to check
+ * @return {Boolean}
+ * @member Ext
+ * @method iterate
+ */
+Ext.isIterable = Ext.iter.Iterable.isIterable;
+Ext.iterate = Ext.iter.Iterable.iterate;
+Ext.each = Ext.iter.Iterable.iterate;</pre>
+</body>
+</html>

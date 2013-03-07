@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-util-Task'>/**
+</span> * @class Ext.util.Task
+ * @extends Object
+ * @alternateClassName Ext.util.DelayedTask
+ *
+ * Abstract task implementation as a wrapper for a function
+ * with bound scope, arguments and delay information.
+ *
+ * The Ext.util.TaskRunner and Ext.TaskManager classes extend
+ * these features by supporting interval calling, starting, stopping, pausing of tasks etc.
+ */
+Ext.define('Ext.util.Task', {
+
+    extend: 'Object',
+
+<span id='Ext-util-Task-method-fn'>    /**
+</span>     * Function to handle as task
+     */
+    fn: Ext.emptyFn,
+
+<span id='Ext-util-Task-property-delay'>    /**
+</span>     * Delay in milliseconds (ms)
+     */
+    delay: 0,
+
+<span id='Ext-util-Task-property-args'>    /**
+</span>     * Arguments to call the task function with
+     */
+    args: [],
+
+<span id='Ext-util-Task-property-scope'>    /**
+</span>     * Scope to call the task function in
+     */
+    scope: this,
+
+<span id='Ext-util-Task-method-constructor'>    /**
+</span>     * Task instance constructor
+     *
+     * @param {Function} fn Task function
+     * @param {Object} scope Scope object (optional)
+     * @param {Array} args Arguments of the task (optional)
+     * @param {Number} delay Delay in milliseconds until call after call() was executed (optional)
+     */
+    constructor: function(fn, scope, args, delay) {
+        this.fn = fn;
+        this.scope = scope;
+        this.args = args;
+        this.delay = delay;
+    },
+
+<span id='Ext-util-Task-method-execute'>    /**
+</span>     * Calls the task function
+     * @return {Ext.util.Task}
+     */
+    execute: function() {
+
+        var me = this, t = setTimeout(function() {
+            me.fn.apply(me.scope, me.args);
+            clearTimeout(t);
+        }, this.delay);
+
+        return this;
+    }
+});
+
+// Shortcuts
+Ext.task = function(fn, scope, args, delay) {
+    return Ext.create('Ext.util.Task', [fn, scope, args, delay]);
+};
+</pre>
+</body>
+</html>

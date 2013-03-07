@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-Function'>/**
+</span> * @class Ext.Function
+ * @extends Object
+ * @singleton
+ *
+ * Singleton class as helper for working with functions
+ */
+Ext.Function = {
+
+<span id='Ext-Function-method-emptyFn'>    /**
+</span>     * An empty function
+     */
+    emptyFn: function () {},
+
+<span id='Ext-Function-method-createInterceptor'>    /**
+</span>     * Creates an interceptor function. The passed function is called before the original one. If it returns false,
+     * the original one is not called. The resulting function returns the results of the original function.
+     * The passed function is called with the parameters of the original function. Example usage:
+     * &lt;pre&gt;&lt;code&gt;
+     var sayHi = function(name){
+     alert('Hi, ' + name);
+     }
+
+     sayHi('Fred'); // alerts &quot;Hi, Fred&quot;
+
+     // create a new function that validates input without
+     // directly modifying the original function:
+     var sayHiToFriend = Ext.Function.createInterceptor(sayHi, function(name){
+     return name == 'Brian';
+     });
+
+     sayHiToFriend('Fred');  // no alert
+     sayHiToFriend('Brian'); // alerts &quot;Hi, Brian&quot;
+     &lt;/code&gt;&lt;/pre&gt;
+     * @param {Function} fn The function to work with
+     * @param {Function} fcn The function to call before the original
+     * @param {Object} scope (optional) The scope (&lt;code&gt;&lt;b&gt;this&lt;/b&gt;&lt;/code&gt; reference) in which the passed function is executed.
+     * &lt;b&gt;If omitted, defaults to the scope in which the original function is called or the browser window.&lt;/b&gt;
+     * @return {Function} The new function
+     */
+    createInterceptor: function (fn, fcn, scope) {
+        var method = fn;
+        return !Ext.isFunction(fcn) ?
+            this :
+            function () {
+                var me = this,
+                    args = arguments;
+                fcn.target = me;
+                fcn.method = method;
+                return (fcn.apply(scope || me || global, args) !== false) ?
+                    method.apply(me || global, args) :
+                    null;
+            };
+    },
+
+<span id='Ext-Function-method-createCallback'>    /**
+</span>     * Creates a callback that passes arguments[0], arguments[1], arguments[2], ...
+     * Call directly on any function. Example: &lt;code&gt;Ext.Function.createCallback(myFunction, arg1, arg2)&lt;/code&gt;
+     * Will create a function that is bound to those 2 args. &lt;b&gt;If a specific scope is required in the
+     * callback, use {@link #createDelegate} instead.&lt;/b&gt; The function returned by createCallback always
+     * executes in the window scope.
+     * &lt;p&gt;This method is required when you want to pass arguments to a callback function.  If no arguments
+     * are needed, you can simply pass a reference to the function as a callback (e.g., callback: myFn).
+     * However, if you tried to pass a function with arguments (e.g., callback: myFn(arg1, arg2)) the function
+     * would simply execute immediately when the code is parsed. Example usage:
+     * &lt;pre&gt;&lt;code&gt;
+     var sayHi = function(name){
+     alert('Hi, ' + name);
+     }
+
+     // clicking the button alerts &quot;Hi, Fred&quot;
+     new Ext.Button({
+     text: 'Say Hi',
+     renderTo: Ext.getBody(),
+     handler: Ext.Function.createCallback(sayHi, 'Fred')
+     });
+     &lt;/code&gt;&lt;/pre&gt;
+     * @param {Function} fn The function to work with
+     * @return {Function} The new function
+     */
+    createCallback: function (fn /*, args...*/) {
+        var args = Array.prototype.slice.call(arguments, 1),
+            method = fn;
+        return function () {
+            return method.apply(window, args);
+        };
+    },
+
+<span id='Ext-Function-method-bind'>    /**
+</span>     * Creates a delegate (callback) that sets the scope to obj.
+     * Call directly on any function. Example: &lt;code&gt;this.myFunction.createDelegate(this, [arg1, arg2])&lt;/code&gt;
+     * Will create a function that is automatically scoped to obj so that the &lt;tt&gt;this&lt;/tt&gt; variable inside the
+     * callback points to obj. Example usage:
+     * &lt;pre&gt;&lt;code&gt;
+     var sayHi = function(name){
+     // Note this use of &quot;this.text&quot; here.  This function expects to
+     // execute within a scope that contains a text property.  In this
+     // example, the &quot;this&quot; variable is pointing to the btn object that
+     // was passed in createDelegate below.
+     alert('Hi, ' + name + '. You clicked the &quot;' + this.text + '&quot; button.');
+     }
+
+     var btn = new Ext.Button({
+     text: 'Say Hi',
+     renderTo: Ext.getBody()
+     });
+
+     // This callback will execute in the scope of the
+     // button instance. Clicking the button alerts
+     // &quot;Hi, Fred. You clicked the &quot;Say Hi&quot; button.&quot;
+     btn.on('click', Ext.Function.createDelegate(sayHi, btn, ['Fred']));
+     &lt;/code&gt;&lt;/pre&gt;
+     * @param {Function} fn The function to work with
+     * @param {Object} scope (optional) The scope (&lt;code&gt;&lt;b&gt;this&lt;/b&gt;&lt;/code&gt; reference) in which the function is executed.
+     * &lt;b&gt;If omitted, defaults to the browser window.&lt;/b&gt;
+     * @param {Array} args (optional) Overrides arguments for the call. (Defaults to the arguments passed by the caller)
+     * @param {Boolean/Number} appendArgs (optional) if True args are appended to call args instead of overriding,
+     * if a number the args are inserted at the specified position
+     * @return {Function} The new function
+     */
+    bind: function (fn, obj, args, appendArgs) {
+        var method = fn;
+        return function () {
+            var callArgs = args || arguments;
+            if (appendArgs === true) {
+                callArgs = Array.prototype.slice.call(arguments, 0);
+                callArgs = callArgs.concat(args);
+            } else if (Ext.isNumber(appendArgs)) {
+                callArgs = Array.prototype.slice.call(arguments, 0);
+                var applyArgs = [appendArgs, 0].concat(args);
+                Array.prototype.splice.apply(callArgs, applyArgs);
+            }
+            return method.apply(obj || window, callArgs);
+        };
+    },
+
+<span id='Ext-Function-method-defer'>    /**
+</span>     * Calls this function after the number of millseconds specified, optionally in a specific scope. Example usage:
+     &lt;pre&gt;&lt;code&gt;
+     var sayHi = function(name){
+     alert('Hi, ' + name);
+     }
+
+     // executes immediately:
+     sayHi('Fred');
+
+     // executes after 2 seconds:
+     Ext.Function.defer(sayHi, 2000, this, ['Fred']);
+
+     // this syntax is sometimes useful for deferring
+     // execution of an anonymous function:
+     (function(){
+     alert('Anonymous');
+     }).defer(100);
+     &lt;/code&gt;&lt;/pre&gt;
+     * @param {Function} fn The function to work with
+     * @param {Number} millis The number of milliseconds for the setTimeout call (if less than or equal to 0 the function is executed immediately)
+     * @param {Object} scope (optional) The scope (&lt;code&gt;&lt;b&gt;this&lt;/b&gt;&lt;/code&gt; reference) in which the function is executed.
+     * &lt;b&gt;If omitted, defaults to the browser window.&lt;/b&gt;
+     * @param {Array} args (optional) Overrides arguments for the call. (Defaults to the arguments passed by the caller)
+     * @param {Boolean/Number} appendArgs (optional) if True args are appended to call args instead of overriding,
+     * if a number the args are inserted at the specified position
+     * @return {Number} The timeout id that can be used with clearTimeout
+     */
+    defer: function (fn, millis, obj, args, appendArgs) {
+        fn = Ext.Function.createDelegate(obj, args, appendArgs);
+        if (millis &gt; 0) {
+            return setTimeout(fn, millis);
+        }
+        fn();
+        return 0;
+    },
+
+<span id='Ext-Function-method-clone'>    /**
+</span>     * Clones a given function
+     * @param {Function} fn Function to clone
+     * @return {Function}
+     */
+    clone: function(fn) {
+        return function() {
+            return fn.apply(this, arguments);
+        };
+    },
+
+<span id='Ext-Function-method-createBuffered'>    createBuffered: function(fn, millis, scope, args) {
+</span>
+    },
+
+
+<span id='Ext-Function-method-createDelayed'>    createDelayed: function(fn, millis, scope, args) {
+</span>
+    },
+
+<span id='Ext-Function-method-createThrottled'>    createThrottled: function(fn, milliInterval, scope) {
+</span>
+    },
+
+<span id='Ext-Function-method-interceptAfter'>    interceptAfter: function(object, methodName, fn, scope) {
+</span>
+    },
+
+<span id='Ext-Function-method-interceptBefore'>    interceptBefore: function(object, methodName, fn, scope) {
+</span>
+    },
+
+<span id='Ext-Function-method-pass'>    pass: function(fn, args, scope) {
+</span>
+    },
+
+<span id='Ext-Function-method-create'>    /**
+</span>     * Creates a new function from given code and returns it's reference
+     * @param code
+     */
+    create: function(code) {
+        return Function(code);
+    }
+};
+
+// Assign shortcut functions
+Ext.bind = Ext.Function.bind;
+Ext.callback = Ext.Function.createCallback;
+Ext.interceptor = Ext.Function.createInterceptor;
+Ext.defer = Ext.Function.defer;
+Ext.emptyFn = Ext.Function.emptyFn;
+Ext.toFunction = Ext.Function.create;</pre>
+</body>
+</html>

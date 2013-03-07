@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-Template'>/**
+</span> * @class Ext.Template
+ * @extends Object
+ *
+ * Ext.Template can be used in four different ways:
+ *
+ *     new Ext.Template(['lala ', '{lol}']).render({lol: 123})
+ *     new Ext.Template('lala {lol}').render({lol: 123})
+ *     new Ext.Template('lala ', '{lol}').render({lol: 123})
+ *
+ *     // Compiles the template (instance can be reused -&gt; higher performance when using multiple times)
+ *     new Ext.Template({
+ *         content: 'lala {lol}', // Array of parts is allowed here too
+ *         compile: true
+ *     }).render({lol: 123})
+ */
+Ext.define('Ext.Template', {
+
+    extend: 'Object',
+
+<span id='Ext-Template-property-compiled'>    /**
+</span>     * Internal flag if the template is already compiled
+     * @private
+     */
+    compiled: false,
+
+<span id='Ext-Template-property-re'>    /**
+</span>     * The regular expression used to match template variables.
+     * Defaults to:&lt;pre&gt;&lt;code&gt;
+     re : /\{([\w-]+)\}/g
+     &lt;/code&gt;&lt;/pre&gt;
+     */
+    re: /\{([\w\-]+)\}/g,
+
+<span id='Ext-Template-property-content'>    /**
+</span>     * Internal content holder
+     * @private
+     */
+    content: '',
+
+<span id='Ext-Template-method-constructor'>    /**
+</span>     * Constructor function
+     *
+     * @param {Object|String|Array} cfg Template config Object or tpl String or Array or template parts
+     * @param {String...} parts (optional) More String template parts
+     */
+    constructor: function (cfg) {
+
+        var me = this,
+            a = arguments,
+            buf = [],
+            content = cfg,
+            compile = false;
+
+        // If configuration object, resolve
+        if (Ext.isObject(cfg)) {
+            content = cfg.content;
+            if (cfg.compile) {
+                compile = cfg.compile;
+            }
+        }
+
+        // Process content call-input variants
+        if (Ext.isArray(content)) {
+            content = content.join(&quot;&quot;);
+        } else if (a.length &gt; 1) {
+            Ext.each(a, function (v) {
+                if (Ext.isObject(v)) {
+                    Ext.apply(me, v);
+                } else {
+                    buf.push(v);
+                }
+            });
+            content = buf.join('');
+        }
+
+        // Persist content instance-locally
+        me.content = content;
+
+        // Compile if requested (only possible with Object as param)
+        if (compile) {
+            me.compile();
+        }
+    },
+
+<span id='Ext-Template-method-render'>    /**
+</span>     * Returns an content fragment of this template with the specified &lt;code&gt;values&lt;/code&gt; applied.
+     * @param {Object/Array} values
+     * The template values. Can be an array if the params are numeric (i.e. &lt;code&gt;{0}&lt;/code&gt;)
+     * or an object (i.e. &lt;code&gt;{foo: 'bar'}&lt;/code&gt;).
+     * @return {String} The content fragment
+     */
+    render: function (values) {
+        var me = this;
+
+        return me.compiled ?
+            me.compiled(values) :
+            me.content.replace(me.re, function (m, name) {
+                return values[name] !== undefined ? values[name] : &quot;&quot;;
+            });
+    },
+
+<span id='Ext-Template-method-compile'>    /**
+</span>     * Compiles the template into an internal function, eliminating the RegEx overhead.
+     * @return {Ext.Template} this
+     */
+    compile: function () {
+        var me = this,
+            sep = &quot;+&quot;;
+
+        function fn(m, name) {
+            name = &quot;values['&quot; + name + &quot;']&quot;;
+            return &quot;'&quot; + sep + '(' + name + &quot; == undefined ? '' : &quot; + name + ')' + sep + &quot;'&quot;;
+        }
+
+        eval(&quot;this.compiled = function(values){ return &quot; + (&quot;'&quot;) +
+            me.content.replace(/\\/g, '\\\\').replace(/(\r\n|\n)/g, '\\n').replace(/'/g, &quot;\\'&quot;).replace(this.re, fn) +
+            (&quot;';};&quot;));
+        return me;
+    }
+});
+
+// Shortcuts
+Ext.template = function(cfg) {
+    return Ext.create('Ext.Template', cfg);
+};</pre>
+</body>
+</html>

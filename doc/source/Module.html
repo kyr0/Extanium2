@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-app-Module'>/**
+</span> * @class Ext.app.Module
+ * Defines a module with it's members.
+ * Exports a callback to be called when module is ready.
+ * @param {String} moduleName Name of the module
+ * @param {Object} members Members of the module
+ * @return {Function}
+ */
+Ext.module = function(moduleName, members) {
+	
+	console.log('defining a module...');
+	
+	var moduleInstance = null;
+	
+	// Let it be a singleton
+	members.singleton = true;
+	
+	// Default initializer...
+	if (!members.init) {
+		members.init = function() {
+			return moduleInstance;
+		}
+	}
+	
+	return function(readyCb) {
+    	
+		console.log('init called.');
+    	
+    	// Create a singleton class instance
+		moduleInstance = Ext.define(moduleName, members, function(moduleInst) {
+			
+			console.log('callback after define called.');
+			
+			// Now, this class has been fully defined and instantiated!
+			var initExport, moduleExports;
+			
+			if (moduleInst.init &amp;&amp; Ext.isFunction(moduleInst.init)) {
+				initExport = moduleInst.init();
+			}
+			
+			// Module exports is the return value of init() or the instance itself 
+			// is a custom init() doesn't return anything!
+			moduleExports = initExport || moduleInst;
+			
+			// Call the callback if given
+			if (readyCb &amp;&amp; Ext.isFunction(readyCb)) {
+				
+				console.log('calling readyCb');
+				readyCb(moduleExports);
+			}
+		});
+		
+		// Return a promise...
+		return moduleInstance;
+    }
+};
+</pre>
+</body>
+</html>

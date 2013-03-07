@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-is'>/**
+</span> * @class Ext.is
+ * @extends Object
+ * @singleton
+ *
+ * Determines what environment the JavaScript code is executing in.
+ */
+Ext.is = {
+
+<span id='Ext-is-method-isEmpty'>    /**
+</span>     * &lt;p&gt;Returns true if the passed value is empty.&lt;/p&gt;
+     * &lt;p&gt;The value is deemed to be empty if it is&lt;div class=&quot;mdetail-params&quot;&gt;&lt;ul&gt;
+     * &lt;li&gt;null&lt;/li&gt;
+     * &lt;li&gt;undefined&lt;/li&gt;
+     * &lt;li&gt;an empty array&lt;/li&gt;
+     * &lt;li&gt;a zero length string (Unless the &lt;tt&gt;allowBlank&lt;/tt&gt; parameter is &lt;tt&gt;true&lt;/tt&gt;)&lt;/li&gt;
+     * &lt;/ul&gt;&lt;/div&gt;
+     * @param {Mixed} value The value to test
+     * @param {Boolean} [allowBlank=false] (optional) true to allow empty strings
+     * @return {Boolean}
+     */
+    isEmpty: function (v, allowBlank) {
+        return v === null || v === undefined || ((Ext.isArray(v) &amp;&amp; !v.length)) || (!allowBlank ? v === '' : false);
+    },
+
+<span id='Ext-is-method-isArray'>    /**
+</span>     * Returns true if the passed value is a JavaScript array, otherwise false.
+     * @param {Mixed} value The value to test
+     * @return {Boolean}
+     */
+    isArray: function (v) {
+        return Object.prototype.toString.apply(v) === '[object Array]';
+    },
+
+<span id='Ext-is-method-isDate'>    /**
+</span>     * Returns true if the passed object is a JavaScript date object, otherwise false.
+     * @param {Object} object The object to test
+     * @return {Boolean}
+     */
+    isDate: function (v) {
+        return Object.prototype.toString.apply(v) === '[object Date]';
+    },
+
+<span id='Ext-is-method-isObject'>    /**
+</span>     * Returns true if the passed value is a JavaScript Object, otherwise false.
+     * @param {Mixed} value The value to test
+     * @return {Boolean}
+     */
+    isObject: function (v) {
+        return !!v &amp;&amp; Object.prototype.toString.call(v) === '[object Object]';
+    },
+
+<span id='Ext-is-method-isPrimitive'>    /**
+</span>     * Returns true if the passed value is a JavaScript 'primitive', a string, number or boolean.
+     * @param {Mixed} value The value to test
+     * @return {Boolean}
+     */
+    isPrimitive: function (v) {
+        return Ext.isString(v) || Ext.isNumber(v) || Ext.isBoolean(v);
+    },
+
+<span id='Ext-is-method-isFunction'>    /**
+</span>     * Returns true if the passed value is a JavaScript Function, otherwise false.
+     * @param {Mixed} value The value to test
+     * @return {Boolean}
+     */
+    isFunction: function (v) {
+        return Object.prototype.toString.apply(v) === '[object Function]';
+    },
+
+<span id='Ext-is-method-isNumber'>    /**
+</span>     * Returns true if the passed value is a number. Returns false for non-finite numbers.
+     * @param {Mixed} value The value to test
+     * @return {Boolean}
+     */
+    isNumber: function (v) {
+        return typeof v === 'number' &amp;&amp; isFinite(v);
+    },
+
+<span id='Ext-is-method-isString'>    /**
+</span>     * Returns true if the passed value is a string.
+     * @param {Mixed} value The value to test
+     * @return {Boolean}
+     */
+    isString: function (v) {
+        return typeof v === 'string';
+    },
+
+<span id='Ext-is-method-isBoolean'>    /**
+</span>     * Returns true if the passed value is a boolean.
+     * @param {Mixed} value The value to test
+     * @return {Boolean}
+     */
+    isBoolean: function (v) {
+        return typeof v === 'boolean';
+    },
+
+<span id='Ext-is-method-isDefined'>    /**
+</span>     * Returns true if the passed value is not undefined.
+     * @param {Mixed} value The value to test
+     * @return {Boolean}
+     */
+    isDefined: function (v) {
+        return typeof v !== 'undefined';
+    },
+
+<span id='Ext-is-method-isMap'>    /**
+</span>     * Returns true if the passed value is an instance of Ext.Map.
+     * @param {Mixed} value The value to test
+     * @return {Boolean}
+     */
+    isMap: function(v) {
+        return v instanceof Ext.Map;
+    },
+
+<span id='Ext-is-method-isCollection'>    /**
+</span>     * Returns true if the passed value is an instance of Ext.Collection.
+     * @param {Mixed} value The value to test
+     * @return {Boolean}
+     */
+    isCollection: function(v) {
+        return v instanceof Ext.Collection;
+    }
+};
+
+// Shortcuts
+Ext.isDefined = Ext.is.isDefined;
+Ext.isBoolean = Ext.is.isBoolean;
+Ext.isString = Ext.is.isString;
+Ext.isNumber = Ext.is.isNumber;
+Ext.isFunction = Ext.is.isFunction;
+Ext.isPrimitive = Ext.is.isPrimitive;
+Ext.isScalar = Ext.is.isPrimitive;
+Ext.isDate = Ext.is.isDate;
+Ext.isArray = Ext.is.isArray;
+Ext.isEmpty = Ext.is.isEmpty;
+Ext.isObject = Ext.is.isObject;
+Ext.isMap = Ext.is.isMap;
+Ext.isCollection = Ext.is.isCollection;</pre>
+</body>
+</html>

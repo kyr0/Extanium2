@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-util-Sorter'>/**
+</span> * @class Ext.util.Sorter
+ * @extends Ext.Class
+ *
+ * Sorter which implement a sort method.
+ */
+Ext.define('Ext.util.Sorter', {
+
+<span id='Ext-util-Sorter-property-direction'>    /**
+</span>     * @property {String} [direction=ASC]
+     * Sort direction to sort to
+     */
+    direction: 'ASC',
+
+<span id='Ext-util-Sorter-property-property'>    /**
+</span>     * @property {String} [property=key]
+     * Name of property to sort by (of data item object e.g. in an Ext.Collection instance)
+     */
+    property: 'key',
+
+<span id='Ext-util-Sorter-property-comparatorFn'>    /**
+</span>     * @property {Function} [comparatorFn=auto generated]
+     * Comparator function used to sort the data
+     */
+    comparatorFn: Ext.emptyFn,
+
+<span id='Ext-util-Sorter-method-constructor'>    /**
+</span>     * Generates the comparator function
+     * @param {Object} cfg Sorter configuration
+     */
+    constructor: function(cfg) {
+
+        // Allow short notation
+        if (cfg.dir) {
+            cfg.direction = cfg.dir;
+        }
+
+        if (cfg.prop) {
+            cfg.property = cfg.prop;
+        }
+
+        // Prepend value path selector for dev comfort
+        if (cfg.property &amp;&amp; cfg.property !== 'key' &amp;&amp; cfg.property !== 'value') {
+            cfg.property = 'value.' + cfg.property;
+        }
+
+        // Call parent
+        this.callParent(arguments);
+
+        // Generate comparator function
+        this.comparatorFn = Ext.util.Comparator.generate(this.direction, this.property);
+    },
+
+    statics: {
+
+<span id='Ext-util-Sorter-method-create'>        /**
+</span>         * Creates a sorter
+         * @param {String} [direction=ASC] Sort direction
+         * @param {String} [property=key Property name
+         * @return {Ext.util.Sorter}
+         */
+        create: function(direction, property) {
+
+            return new Ext.util.Sorter({
+                direction: direction || Ext.util.Sorter.prototype.direction,
+                property: property || Ext.util.Sorter.prototype.property
+            });
+        }
+    }
+}, function(ctor) {
+	
+	// Shortcuts
+	Ext.sorter = ctor.create;	
+});
+</pre>
+</body>
+</html>

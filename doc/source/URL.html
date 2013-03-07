@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-URL'>/**
+</span> * @class Ext.URL
+ * @extends Object
+ * @singleton
+ * Class for working with URL's.
+ */
+Ext.URL = {
+
+<span id='Ext-URL-method-append'>    /**
+</span>     * Appends content to the query string of a URL, handling logic for whether to place
+     * a question mark or ampersand.
+     * @param {String} url The URL to append to.
+     * @param {String} string The content to append to the URL.
+     * @return (String) The resulting URL
+     */
+    append: function (url, string) {
+        if (!Ext.isEmpty(string)) {
+            return url + (url.indexOf('?') === -1 ? '?' : '&amp;') + string;
+        }
+        return url;
+    },
+
+<span id='Ext-URL-method-encode'>    /**
+</span>     * Takes an object and converts it to an encoded URL. e.g. Ext.urlEncode({foo: 1, bar: 2});
+     * would return &quot;foo=1&amp;bar=2&quot;. Optionally, property values can be arrays,
+     * instead of keys and the resulting string that's returned will contain a name/value pair for each array value.
+     * @param {Object} o
+     * @param {String} pre (optional) A prefix to add to the url encoded string
+     * @return {String}
+     */
+    encode: function (o, pre) {
+        var empty,
+            buf = [],
+            e = encodeURIComponent;
+
+        Ext.iterate(o, function (key, item) {
+            empty = Ext.isEmpty(item);
+            Ext.each(empty ? key : item, function (val) {
+                buf.push('&amp;', e(key), '=',
+                    (!Ext.isEmpty(val) &amp;&amp; (val !== key || !empty)) ? (Ext.isDate(val) ? Ext.encode(val).replace(/&quot;/g,
+                        '') : e(val)) : '');
+            });
+        });
+        if (!pre) {
+            buf.shift();
+            pre = '';
+        }
+        return pre + buf.join('');
+    },
+
+<span id='Ext-URL-method-decode'>    /**
+</span>     * Takes an encoded URL and and converts it to an object. Example: &lt;pre&gt;&lt;code&gt;
+     Ext.urlDecode(&quot;foo=1&amp;bar=2&quot;); // returns {foo: &quot;1&quot;, bar: &quot;2&quot;}
+     Ext.urlDecode(&quot;foo=1&amp;bar=2&amp;bar=3&amp;bar=4&quot;, false); // returns {foo: &quot;1&quot;, bar: [&quot;2&quot;, &quot;3&quot;, &quot;4&quot;]}
+     &lt;/code&gt;&lt;/pre&gt;
+     * @param {String} string
+     * @param {Boolean} overwrite (optional) Items of the same name will overwrite previous values instead of creating an an array (Defaults to false).
+     * @return {Object} A literal with members
+     */
+    decode: function (string, overwrite) {
+        if (Ext.isEmpty(string)) {
+            return {};
+        }
+        var obj = {},
+            pairs = string.split('&amp;'),
+            d = decodeURIComponent,
+            name,
+            value;
+        Ext.each(pairs, function (pair) {
+            pair = pair.split('=');
+            name = d(pair[0]);
+            value = d(pair[1]);
+            obj[name] = overwrite || !obj[name] ? value :
+                [].concat(obj[name]).concat(value);
+        });
+        return obj;
+    },
+
+<span id='Ext-URL-method-objectFromQueryString'>    /**
+</span>     * TODO
+     * @param queryString
+     */
+    objectFromQueryString: function(queryString) {
+
+    },
+
+<span id='Ext-URL-method-toQueryObjects'>    /**
+</span>     * TODO
+     * @param objects
+     * @param recursive
+     */
+    toQueryObjects: function(objects, recursive) {
+
+    },
+
+<span id='Ext-URL-method-toQueryString'>    /**
+</span>     * TODO
+     * Returns a query string URL
+     * @param objects
+     */
+    toQueryString: function(objects, recursive) {
+
+    }
+};
+
+// Shortcuts
+Ext.urlEncode = Ext.URL.encode;
+Ext.urlDecode = Ext.URL.decode;
+Ext.urlAppend = Ext.URL.append;</pre>
+</body>
+</html>

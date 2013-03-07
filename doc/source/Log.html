@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-Log'>/**
+</span> * @class Ext.Log
+ * @singleton
+ * @extends Object
+ *
+ * Implements methods for platform-independent logging.
+ */
+Ext.Log = {
+
+<span id='Ext-Log-property-enableLogging'>    /**
+</span>     * Controls, if log messages will be shown or not (default: false)
+     */
+    enableLogging: true,
+
+<span id='Ext-Log-method-_log'>    /**
+</span>     * Method for logging
+     *
+     * @param {arguments} logMessages Message to log (Can be array)
+     * @param {String} severity  Severity role name
+     * @return Ext.Log
+     */
+    _log: function (logMessages, severity) {
+
+        var toLog = [];
+        if (!severity) {
+            severity = 'log';
+        }
+
+		// Collect messages into a flat array
+		if (logMessages.length &gt; 1) {
+			
+	        for (var i = 0; i &lt; logMessages.length; i++) {
+	            toLog.push(logMessages[i]);
+	        }
+        } else {
+        	toLog = logMessages[0];
+        } 
+
+        // Only log if debugging is enabled
+        if (Ext.Log.enableLogging === true) {
+
+            try {
+                console[severity](toLog);
+            } catch (e) {
+                console.log(toLog);
+            }
+        }
+        return Ext;
+    },
+<span id='Ext-Log-method-log'>    log: function () {
+</span>        return Ext.Log._log(arguments, 'info')
+    },
+<span id='Ext-Log-method-info'>    info: function () {
+</span>        return Ext.Log._log(arguments, 'info')
+    },
+<span id='Ext-Log-method-debug'>    debug: function () {
+</span>        return Ext.Log._log(arguments, 'debug')
+    },
+<span id='Ext-Log-method-warn'>    warn: function () {
+</span>        return Ext.Log._log(arguments, 'warn')
+    },
+<span id='Ext-Log-method-error'>    error: function() {
+</span>    	return Ext.Log._log(arguments, 'error')
+    }
+};
+
+// Shortcuts
+Ext.log = Ext.Log.log;
+Ext.warn = Ext.Log.warn;
+Ext.debug = Ext.Log.debug;
+Ext.dir = Ext.Log.log;
+Ext.info = Ext.Log.info;
+Ext.error = Ext.Log.error;</pre>
+</body>
+</html>

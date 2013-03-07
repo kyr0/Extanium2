@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-Registry'>/**
+</span> * @class Ext.Registry
+ * @extends Object
+ * @singleton
+ *
+ * Class for working with global variables.
+ */
+Ext.Registry = {
+
+<span id='Ext-Registry-property-registry'>    /**
+</span>     * Internal storage of registry items
+     * @private
+     */
+    registry: {},
+
+<span id='Ext-Registry-method-set'>    /**
+</span>     * Sets a value identified by name
+     * @param {String} name Name identifier
+     * @param {Mixed} value Value to set
+     * @return {Ext.Registry}
+     */
+    set: function (name, value) {
+        Ext.Registry.registry[name] = value;
+        return Ext.Registry;
+    },
+
+<span id='Ext-Registry-method-get'>    /**
+</span>     * Returns value by name
+     * @return {Mixed} Value
+     */
+    get: function (name) {
+        return Ext.Registry.registry[name];
+    },
+
+<span id='Ext-Registry-method-isset'>    /**
+</span>     * Checks if a key is exisitng in global registry
+     * @return {Boolean}
+     */
+    isset: function (name) {
+
+        if (Ext.Registry.registry[name]) {
+            return true;
+        }
+        return false;
+    }
+};
+
+// Create registry namespace in global scope
+Ext.get = Ext.Registry.get;
+Ext.isset = Ext.Registry.isset;
+Ext.set = Ext.Registry.set;</pre>
+</body>
+</html>

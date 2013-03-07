@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-util-JSON'>/**
+</span> * @class Ext.util.JSON
+ * @extends Object
+ * @singleton
+ *
+ * Modified version of Douglas Crockford's json.js (http://www.json.org/js.html),
+ * extended version of Ext Core 3.1's Ext.util JSON class.
+ */
+Ext.util.JSON = {
+
+<span id='Ext-util-JSON-method-_decode'>    /**
+</span>     * Decodes/evals a given JSON text
+     * @param {String} json JSON text
+     * @return {Object}
+     * @private
+     */
+    _decode: function (json) {
+        return eval(&quot;(&quot; + json + ')');
+    },
+
+<span id='Ext-util-JSON-method-_encode'>    /**
+</span>     * Encodes a given data structure
+     * @param {Object} o Object-like data structure type
+     * @return {String}
+     * @private
+     */
+    _encode: function (o) {
+        if (!Ext.isDefined(o) || o === null) {
+            return &quot;null&quot;;
+        } else if (Ext.isArray(o)) {
+            return Ext.Array.encode(o);
+        } else if (Ext.isDate(o)) {
+            return Ext.Date.encode(o);
+        } else if (Ext.isString(o)) {
+            return Ext.String.encode(o);
+        } else if (typeof o === &quot;number&quot;) {
+            //don't use isNumber here, since finite checks happen inside isNumber
+            return isFinite(o) ? new String(o) : &quot;null&quot;;
+        } else if (Ext.isBoolean(o)) {
+            return new String(o);
+        } else {
+            var a = [&quot;{&quot;], b, i, v;
+            for (i in o) {
+                // don't encode DOM objects
+                if (!o.getElementsByTagName) {
+                    if (!Ext.supports.objectHasOwnProperty || o.hasOwnProperty(i)) {
+                        v = o[i];
+                        switch (typeof v) {
+                            case &quot;undefined&quot;:
+                            case &quot;function&quot;:
+                            case &quot;unknown&quot;:
+                                break;
+                            default:
+                                if (b) {
+                                    a.push(',');
+                                }
+                                a.push(Ext.util.JSON._encode(i), &quot;:&quot;,
+                                    v === null ? &quot;null&quot; : Ext.util.JSON._encode(v));
+                                b = true;
+                        }
+                    }
+                }
+            }
+            a.push(&quot;}&quot;);
+            return a.join(&quot;&quot;);
+        }
+    },
+
+<span id='Ext-util-JSON-method-encode'>    /**
+</span>     * Encodes an Object, Array or other value
+     * @param {Mixed} o The variable to encode
+     * @return {String} The JSON string
+     */
+    encode: function (o) {
+        var encodeFn = JSON ? JSON.stringify : Ext.util.JSON._encode;
+        return encodeFn(o);
+    },
+
+<span id='Ext-util-JSON-method-decode'>    /**
+</span>     * Decodes (parses) a JSON string to an object. If the JSON is invalid, this function throws a SyntaxError unless the safe option is set.
+     * @param {String} json The JSON string
+     * @return {Object} The resulting object
+     */
+    decode: function (json) {
+        var decodeFn = JSON ? JSON.parse : Ext.util.JSON._decode;
+        return decodeFn(json);
+    }
+};
+
+<span id='Ext-method-encode'>/**
+</span> * Shorthand for {@link Ext.util.JSON#encode}
+ * @param {Mixed} o The variable to encode
+ * @return {String} The JSON string
+ * @member Ext
+ * @method encode
+ */
+Ext.encode = Ext.util.JSON.encode;
+Ext.toJSON = Ext.util.JSON.encode;
+
+<span id='Ext-method-decode'>/**
+</span> * Shorthand for {@link Ext.util.JSON#decode}
+ * @param {String} json The JSON string
+ * @param {Boolean} safe (optional) Whether to return null or throw an exception if the JSON is invalid.
+ * @return {Object} The resulting object
+ * @member Ext
+ * @method decode
+ */
+Ext.decode = Ext.util.JSON.decode;
+Ext.fromJSON = Ext.util.JSON.decode;</pre>
+</body>
+</html>

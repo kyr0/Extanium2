@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-Number'>/**
+</span> * @class Ext.Number
+ * @extends Object
+ * @singleton
+ * Singleton class as helper working with Number's.
+ */
+Ext.Number = {
+
+<span id='Ext-Number-property-idSequence'>    /**
+</span>     * Internal local ID sequence
+     * @private
+     */
+    idSequence: 0,
+
+<span id='Ext-Number-method-pad'>    /**
+</span>     * Pads a number and returns as String (formatted number)
+     *
+     * @param {Number} n Number to pad and format
+     * @return {String}
+     */
+    pad: function (n) {
+        return n &lt; 10 ? &quot;0&quot; + n : n;
+    },
+
+<span id='Ext-Number-method-id'>    /**
+</span>     * Returns a unique Ext id
+     * @return {String}
+     */
+    id: function (prefix) {
+
+        if (!prefix) {
+            prefix = Ext.name;
+        }
+        Ext.Number.idSequence++;
+
+        return prefix + &quot;-&quot; + Ext.Number.idSequence;
+    },
+
+<span id='Ext-Number-method-constrain'>    constrain: function(number, min, max) {
+</span>
+    },
+
+<span id='Ext-Number-method-toNumber'>    toNumber: function(value, defaultNumber) {
+</span>
+    },
+
+<span id='Ext-Number-method-getRandom'>    getRandom: function(from, to) {
+</span>
+    },
+
+<span id='Ext-Number-method-toFixed'>    toFixed: function(value, precision) {
+</span>
+    },
+
+<span id='Ext-Number-method-formatCurrency'>    formatCurrency: function(value, sign, decimalDigits, signAtEnd) {
+</span>
+    },
+
+
+<span id='Ext-Number-method-formatFileSize'>    formatFileSize: function(size, useIbiFormat) {
+</span>
+    },
+
+<span id='Ext-Number-method-format'>    format: function(value, format) {
+</span>
+    },
+
+<span id='Ext-Number-method-from'>    from: function(value) {
+</span>        return Number(value);
+    }
+};
+
+// Shortcuts
+Ext.id = Ext.Number.id;
+Ext.toNumber = Ext.Number.from;
+Ext.random = Ext.Number.getRandom;</pre>
+</body>
+</html>

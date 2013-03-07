@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-iter-Filterable'>/**
+</span> * @class Ext.iter.Filterable
+ * @extends Ext.Class
+ *
+ * Implements filtering for iterable data structures.
+ */
+Ext.define('Ext.iter.Filterable', {
+
+<span id='Ext-iter-Filterable-property-isFilterable'>    /**
+</span>     * @property {Boolean} [isFilterable=true]
+     * Defines if the data structure is filterable
+     */
+    isSortable: true,
+
+<span id='Ext-iter-Filterable-property-filters'>    /**
+</span>     * @property {Array} filters
+     * The array of filters currently used to filter the data structure.
+     * You can call addFilter(Ext.filter(...)) and removeFilter(filter) to accomplish multi-filtering.
+     * @readonly
+     */
+    filters: [],
+
+<span id='Ext-iter-Filterable-method-initFilterable'>    /**
+</span>     * Initializes the filtering of data structures
+     * @private
+     * @return void
+     */
+    initFilterable: function() {
+
+        this.addEvents(
+
+<span id='Ext-iter-Filterable-event-beforefilter'>            /**
+</span>             * @event beforefilter
+             * This event gets fired before filtering happens
+             * @param {Ext.iter.Interface} this
+             * @param {Array} filters
+             */
+            'beforefilter',
+
+<span id='Ext-iter-Filterable-event-filter'>            /**
+</span>             * @event filter
+             * This event gets fired when filtering has happened
+             * @param {Ext.iter.Interface} this
+             * @param {Array} filter
+             */
+            'filter',
+
+<span id='Ext-iter-Filterable-event-filteradded'>            /**
+</span>             * @event filteradded
+             * This event gets fired when a filter gets added
+             * @param {Ext.iter.Interface} this
+             * @param {Ext.util.Filter} filter
+             */
+            'filteradded',
+
+<span id='Ext-iter-Filterable-event-filterremoved'>            /**
+</span>             * @event filterremoved
+             * This event gets fired when a filter gets removed
+             * @param {Ext.iter.Interface} this
+             * @param {Ext.util.Filter} filter
+             */
+            'filterremoved',
+
+<span id='Ext-iter-Filterable-event-filterscleared'>            /**
+</span>             * @event filterscleared
+             * This event gets fired when all filters are removed
+             * @param {Ext.iter.Interface} this
+             */
+            'filterscleared'
+        );
+
+        // Init filters array
+        this.clearFilters(true);
+    },
+
+
+<span id='Ext-iter-Filterable-method-addFilter'>    /**
+</span>     * Adds a filter. You can create a new filter using Ext.filter(...).
+     * @param {Ext.util.Filter} filter Filter to add
+     * @param {Boolean} [noAutoFilter=false] (optional) Automatically filter on call
+     * @param {Boolean} [silent=false] (optional) If silent, no event will be fired
+     * @return {Ext.iter.Interface}
+     */
+    addFilter: function(filter, noAutoFilter, silent) {
+
+        if (filter &amp;&amp; filter instanceof Ext.util.Filter) {
+            this.filters.push(filter);
+        }
+
+        if (!silent) {
+            this.fireEvent('filteradded', this, filter);
+        }
+
+        if (!noAutoFilter) {
+            this.filter([], silent);
+        }
+        return this;
+    },
+
+<span id='Ext-iter-Filterable-method-removeFilter'>    /**
+</span>     * Removes a filter.
+     * @param {Ext.util.Filter} filter Filter to remove
+     * @param {Boolean} [noAutoFilter=false] (optional) Automatically filter on call
+     * @param {Boolean} [silent=false] (optional) If silent, no event will be fired
+     * @return {Ext.iter.Interface}
+     */
+    removeFilter: function(filter, noAutoFilter, silent) {
+
+        // Remove filter
+        Ext.Array.remove(this.filters, filter);
+
+        if (!silent) {
+            this.fireEvent('filterremoved', this, filter);
+        }
+
+        if (!noAutoFilter) {
+            this.filter([], silent);
+        }
+        return this;
+    },
+
+<span id='Ext-iter-Filterable-method-clearFilters'>    /**
+</span>     * Removes all filters currently set
+     * @param {Boolean} [silent=false] (optional) If silent, no event will be fired
+     * @return void
+     */
+    clearFilters: function(silent) {
+
+        this.filters = [];
+
+        if (!silent) {
+            this.fireEvent('filterscleared', this);
+        }
+    }
+});</pre>
+</body>
+</html>

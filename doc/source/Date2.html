@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-Date'>/**
+</span> * @class Ext.Date
+ * @extends Object
+ * @singleton
+ * Singleton class as helper working with Date's.
+ */
+Ext.Date = {
+
+<span id='Ext-Date-property-MILLI'>    /**
+</span>    * Date interval constant
+    * @type String
+    */
+   MILLI : &quot;ms&quot;,
+
+<span id='Ext-Date-property-SECOND'>   /**
+</span>    * Date interval constant
+    * @type String
+    */
+   SECOND : &quot;s&quot;,
+
+<span id='Ext-Date-property-MINUTE'>   /**
+</span>    * Date interval constant
+    * @type String
+    */
+   MINUTE : &quot;mi&quot;,
+
+<span id='Ext-Date-property-HOUR'>   /** Date interval constant
+</span>    * @type String
+    */
+   HOUR : &quot;h&quot;,
+
+<span id='Ext-Date-property-DAY'>   /**
+</span>    * Date interval constant
+    * @type String
+    */
+   DAY : &quot;d&quot;,
+
+<span id='Ext-Date-property-MONTH'>   /**
+</span>    * Date interval constant
+    * @type String
+    */
+   MONTH : &quot;mo&quot;,
+
+<span id='Ext-Date-property-YEAR'>   /**
+</span>    * Date interval constant
+    * @type String
+    */
+   YEAR : &quot;y&quot;,
+
+<span id='Ext-Date-property-defaultFormat'>    defaultFormat: 'd/m/Y',
+</span>
+<span id='Ext-Date-property-dayNames'>    dayNames: [
+</span>        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+    ],
+
+<span id='Ext-Date-property-monthNames'>    monthNames: [
+</span>        'Januar',
+        'Feburar',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ],
+
+<span id='Ext-Date-property-monthNumbers'>    monthNumbers: {
+</span>        'Januar': 0,
+        'Jan': 0,
+        'Feburar': 1,
+        'Feb': 1
+        //TODO
+    },
+
+<span id='Ext-Date-property-defaults'>    defaults: {
+</span>        y: undefined,
+        m: undefined,
+        d: undefined,
+        h: undefined,
+        i: undefined,
+        s: undefined,
+        ms: undefined
+    },
+
+<span id='Ext-Date-property-formatCodes'>    formatCodes: {
+</span>        // TODO: implement map of default codes
+    },
+
+
+<span id='Ext-Date-property-formatFunctions'>    formatFunctions: {
+</span>        // TODO: Every name is mapped to a formatting function
+    },
+
+<span id='Ext-Date-method-encode'>    /**
+</span>     * Encodes a Date as JSON-text
+     *
+     * @param {Date} date Date to encode
+     * @return {String}
+     */
+    encode: function (date) {
+
+        return '&quot;' + d.getFullYear() + &quot;-&quot; +
+            Ext.Number.pad(d.getMonth() + 1) + &quot;-&quot; +
+            Ext.Number.pad(d.getDate()) + &quot;T&quot; +
+            Ext.Number.pad(d.getHours()) + &quot;:&quot; +
+            Ext.Number.pad(d.getMinutes()) + &quot;:&quot; +
+            Ext.Number.pad(d.getSeconds()) + '&quot;';
+    },
+
+<span id='Ext-Date-method-parse'>    parse: function(date, format) {
+</span>        // TODO
+    },
+
+
+<span id='Ext-Date-method-format'>    format: function(date, format) {
+</span>        // TODO
+    },
+
+<span id='Ext-Date-method-add'>    add: function(date, interval, value) {
+</span>
+    },
+
+<span id='Ext-Date-method-isBetween'>    isBetween: function(date, startDate, endDate) {
+</span>
+    },
+
+<span id='Ext-Date-method-clearTime'>    clearTime: function(date, doClone) {
+</span>
+    },
+
+<span id='Ext-Date-method-clone'>    clone: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-getDayOfYear'>    getDayOfYear: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-getDaysInMonth'>    getDaysInMonth: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-getElapsedMS'>    getElapsedMS: function(date1, date2) {
+</span>
+    },
+
+<span id='Ext-Date-method-getFirstDateOfMonth'>    getFirstDateOfMonth: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-getFirstDayOfMonth'>    getFirstDayOfMonth: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-getGMTOffset'>    getGMTOffset: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-getLastDateOfMonth'>    getLastDateOfMonth: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-getLastDayOfMonth'>    getLastDayOfMonth: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-getMonthNumber'>    getMonthNumber: function(name) {
+</span>
+    },
+
+<span id='Ext-Date-method-getTimezone'>    getTimezone: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-getWeekOfYear'>    getWeekOfYear: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-isDST'>    isDST: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-isEqual'>    isEqual: function(date1, date2) {
+</span>
+    },
+
+<span id='Ext-Date-method-isLeapYear'>    isLeapYear: function(date) {
+</span>
+    },
+
+<span id='Ext-Date-method-isValid'>    isValid: function(year, monh, day, hour, minute, second, millisecond) {
+</span>        // TODO: Check for rollover
+    },
+
+<span id='Ext-Date-method-now'>    now: function() {
+</span>
+    }
+};
+
+// Shortcuts
+Ext.toDate = Ext.Date.parse;</pre>
+</body>
+</html>
